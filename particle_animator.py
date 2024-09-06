@@ -5,13 +5,13 @@ from Emitter import Emitter
 
 np.random.seed(1)
 N = 5
-FACTOR = 4
-emitter1 = Emitter(0.5, 0.5, -135, 18)
-emitter2 = Emitter(0.5, 0.5, 135, 18)
-emitter3 = Emitter(0.5, 0.5, -45, 18)
-emitter4 = Emitter(0.5, 0.51, 45, 18)
+FACTOR = 1
+emitter1 = Emitter(-135, 18, px=0.5, py=0.5)
+emitter2 = Emitter(135, 18, px=0.5, py=0.5)
+emitter3 = Emitter(-45, 18, px=0.5, py=0.5)
+emitter4 = Emitter(45, 18, px=0.5, py=0.5)
 
-for n in range(1, 360):
+for n in range(1, 40):
     emitter1.run()
     emitter2.run()
     emitter3.run()
@@ -87,4 +87,4 @@ for n in range(1, 360):
     if n % 10 == 0:
         print("Wrote %d frame" % n)
 
-    fig.write_image('fig_%03d.png' % n)
+    fig.write_image('images/fig_%03d.png' % n)

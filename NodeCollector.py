@@ -2,6 +2,11 @@ from dataclasses import dataclass
 import numpy as np
 
 
+def move_nodes(node):
+    node.px = node.px + node.vx
+    node.py = node.py + node.vy
+
+
 @dataclass
 class Node:
     """Class for keeping track of a node"""
@@ -14,6 +19,9 @@ class Node:
     ax: float = 0.0
     ay: float = 0.0
     r: float = 0.0
+
+    def run(self):
+        move_nodes(self)
 
 
 class NodeCollector:
@@ -65,8 +73,7 @@ class NodeCollector:
             self.ay = self.ay[ln_diff:]
             self.r = self.r[ln_diff:]
 
-        self.px = self.px + self.vx
-        self.py = self.py + self.vy
+        move_nodes(self)
 
     def reflect(self):
         s = np.where(self.px > 1, -1, 1)
