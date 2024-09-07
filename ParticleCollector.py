@@ -1,8 +1,9 @@
 from dataclasses import dataclass
+import math
 import numpy as np
 
 
-def move_nodes(node):
+def move_node_particles(node):
     node.px = node.px + node.vx
     node.py = node.py + node.vy
 
@@ -18,13 +19,18 @@ class Node:
     cl: float = 0.2
     ax: float = 0.0
     ay: float = 0.0
-    r: float = 0.0
+    angle: float = 0.0
+    thrust: float = 0.0
 
     def run(self):
-        move_nodes(self)
+        if self.thrust:
+            angle = math.radians(self.angle)
+            self.px += math.cos(angle) * self.thrust
+            self.py += math.sin(angle) * self.thrust
+        move_node_particles(self)
 
 
-class NodeCollector:
+class ParticleCollector:
     def __init__(self):
         self.px = np.array([])
         self.py = np.array([])
@@ -32,33 +38,14 @@ class NodeCollector:
         self.vy = np.array([])
         self.sz = np.array([])
         self.cl = np.array([])
-        self.ax = np.array([])
-        self.ay = np.array([])
-        self.r = np.array([])
 
-    def add_nodes(self, *nodes):
-        for node in nodes:
-            self.px = np.append(self.px, node.px)
-            self.py = np.append(self.py, node.py)
-            self.vx = np.append(self.vx, node.vx)
-            self.vy = np.append(self.vy, node.vy)
-            self.sz = np.append(self.sz, node.sz)
-            self.cl = np.append(self.cl, node.cl)
-            self.ax = np.append(self.ax, node.ax)
-            self.ay = np.append(self.ay, node.ay)
-            self.r = np.append(self.r, node.r)
-
-    def add_node(self, px, py, vx, vy, size=4, color=0.2,
-                 ax=0.0, ay=0.0, r=0.0):
+    def add_particle(self, px, py, vx, vy, size, color=0.2):
         self.px = np.append(self.px, px)
         self.py = np.append(self.py, py)
         self.vx = np.append(self.vx, vx)
         self.vy = np.append(self.vy, vy)
         self.sz = np.append(self.sz, size)
         self.cl = np.append(self.cl, color)
-        self.ax = np.append(self.ax, ax)
-        self.ay = np.append(self.ay, ay)
-        self.r = np.append(self.r, r)
 
     def run(self):
         ln_diff = len(self.px) - 540
@@ -69,11 +56,8 @@ class NodeCollector:
             self.vy = self.vy[ln_diff:]
             self.sz = self.sz[ln_diff:]
             self.cl = self.cl[ln_diff:]
-            self.ax = self.ax[ln_diff:]
-            self.ay = self.ay[ln_diff:]
-            self.r = self.r[ln_diff:]
 
-        move_nodes(self)
+        move_node_particles(self)
 
     def reflect(self):
         s = np.where(self.px > 1, -1, 1)

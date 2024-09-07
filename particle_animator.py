@@ -5,13 +5,13 @@ from Emitter import Emitter
 
 np.random.seed(1)
 N = 5
-FACTOR = 1
-emitter1 = Emitter(-135, 18, px=0.5, py=0.5)
-emitter2 = Emitter(135, 18, px=0.5, py=0.5)
-emitter3 = Emitter(-45, 18, px=0.5, py=0.5)
-emitter4 = Emitter(45, 18, px=0.5, py=0.5)
+FACTOR = 4
+emitter1 = Emitter(18, thrust=0.002, angle=-135, px=0.5, py=0.5)
+emitter2 = Emitter(18, thrust=0.002, angle=135, px=0.5, py=0.5)
+emitter3 = Emitter(18, thrust=0.002, angle=-45, px=0.5, py=0.5)
+emitter4 = Emitter(18, thrust=0.002, angle=45, px=0.5, py=0.5)
 
-for n in range(1, 40):
+for n in range(1, 240):
     emitter1.run()
     emitter2.run()
     emitter3.run()

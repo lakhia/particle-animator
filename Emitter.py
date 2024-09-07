@@ -1,19 +1,18 @@
 import math
 import random
 
-from NodeCollector import NodeCollector, Node
+from ParticleCollector import ParticleCollector, Node
 
 
 class Emitter(Node):
-    def __init__(self, angle, rate=1.0, angle_variation=10.0,
+    def __init__(self, rate, angle_variation=10.0,
                  speed=65.0, speed_variation=35.0, **kwargs):
         super().__init__(**kwargs)
-        self.angle = angle
         self.rate = rate
         self.angle_variation = angle_variation
         self.speed_min = speed - speed_variation
         self.speed_max = speed + speed_variation
-        self.collector = NodeCollector()
+        self.collector = ParticleCollector()
 
     def run(self):
         super().run()
@@ -24,8 +23,8 @@ class Emitter(Node):
             angle = math.radians(self.angle + angle_dev)
             vx = math.cos(angle) / hypo
             vy = math.sin(angle) / hypo
-            sz = random.uniform(1, 4)
-            self.collector.add_node(px=self.px, py=self.py, vx=vx, vy=vy,
-                                    size=sz, color=angle_dev / 30)
+            sz = random.uniform(10, 28)
+            self.collector.add_particle(px=self.px, py=self.py, vx=vx, vy=vy,
+                                        size=sz, color=angle_dev / 30)
 
         self.collector.run()
