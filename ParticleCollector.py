@@ -22,12 +22,25 @@ class Node:
     angle: float = 0.0
     thrust: float = 0.0
 
-    def run(self):
+    def run(self, frame: int):
         if self.thrust:
             angle = math.radians(self.angle)
             self.px += math.cos(angle) * self.thrust
             self.py += math.sin(angle) * self.thrust
         move_node_particles(self)
+
+    def reflect(self):
+        # TODO: reflection in thrust mode is hacky
+        if self.px > 1 or self.px < 0:
+            if self.thrust:
+                self.px = 1 - math.fabs(self.px)
+            else:
+                self.vx = self.vx * -1
+        if self.py > 1 or self.py < 0:
+            if self.thrust:
+                self.py = 1 - math.fabs(self.py)
+            else:
+                self.vy = self.vy * -1
 
 
 class ParticleCollector:
@@ -47,8 +60,8 @@ class ParticleCollector:
         self.sz = np.append(self.sz, size)
         self.cl = np.append(self.cl, color)
 
-    def run(self):
-        ln_diff = len(self.px) - 540
+    def run(self, frame: int):
+        ln_diff = len(self.px) - 600
         if ln_diff > 0:
             self.px = self.px[ln_diff:]
             self.py = self.py[ln_diff:]
