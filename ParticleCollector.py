@@ -21,12 +21,14 @@ class Node:
     ay: float = 0.0
     angle: float = 0.0
     thrust: float = 0.0
+    life: int = 0
 
     def run(self, frame: int):
         if self.thrust:
             angle = math.radians(self.angle)
             self.px += math.cos(angle) * self.thrust
             self.py += math.sin(angle) * self.thrust
+        self.life += 1
         move_node_particles(self)
 
     def reflect(self):
@@ -51,6 +53,7 @@ class ParticleCollector:
         self.vy = np.array([])
         self.sz = np.array([])
         self.cl = np.array([])
+        self.life = np.array([])
 
     def add_particle(self, px, py, vx, vy, size, color=0.2):
         self.px = np.append(self.px, px)
@@ -59,6 +62,7 @@ class ParticleCollector:
         self.vy = np.append(self.vy, vy)
         self.sz = np.append(self.sz, size)
         self.cl = np.append(self.cl, color)
+        self.life = np.append(self.life, 1)
 
     def run(self, frame: int):
         ln_diff = len(self.px) - 600
@@ -69,7 +73,9 @@ class ParticleCollector:
             self.vy = self.vy[ln_diff:]
             self.sz = self.sz[ln_diff:]
             self.cl = self.cl[ln_diff:]
+            self.life = self.life[ln_diff:]
 
+        self.life += 1
         move_node_particles(self)
 
     def reflect(self):

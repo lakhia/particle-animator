@@ -26,8 +26,6 @@ class Emitter(Node):
                                     size=sz, color=angle_dev / 30)
 
     def run(self, frame: int):
-        if frame % 5 == 0:
-            self.angle += random.uniform(-10, 10)
         self.reflect()
         super().run(frame)
         if self.rate >= 1:
