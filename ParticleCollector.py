@@ -76,6 +76,7 @@ class ParticleCollector:
             self.life = self.life[ln_diff:]
 
         self.life += 1
+        self.sz = 200 * (3 + 12 * np.abs(np.cos(0.15 * self.life))) / (200 + self.life)
         move_node_particles(self)
 
     def reflect(self):

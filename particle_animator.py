@@ -6,23 +6,11 @@ from Emitter import Emitter
 np.random.seed(1)
 FACTOR = 4
 emitters = [
-    Emitter(0.5, thrust=0.006, angle=180+uniform(-10,10), px=1, py=0.20,
-            par_angle_offset=-90+uniform(-10,10), speed=0, speed_variation=0),
-    Emitter(0.5, thrust=0.006, angle=uniform(-10,10), px=0, py=0.80,
-            par_angle_offset=-90+uniform(-10,10), speed=0, speed_variation=0),
-    Emitter(0.5, thrust=0.006, angle=180+uniform(-10,10), px=1, py=0.60,
-            par_angle_offset=90+uniform(-10,10), speed=0, speed_variation=0),
-    Emitter(0.5, thrust=0.006, angle=uniform(-10,10), px=0, py=0.40,
-            par_angle_offset=90+uniform(-10,10), speed=0, speed_variation=0),
-
-    Emitter(0.5, thrust=0.006, angle=-90+uniform(-10,10), px=0.2, py=1,
-            par_angle_offset=-90+uniform(-10,10), speed=0, speed_variation=0),
-    Emitter(0.5, thrust=0.006, angle=90+uniform(-10,10), px=0.8, py=0,
-            par_angle_offset=-90+uniform(-10,10), speed=0, speed_variation=0),
-    Emitter(0.5, thrust=0.006, angle=-90+uniform(-10,10), px=0.60, py=1,
-            par_angle_offset=90+uniform(-10,10), speed=0, speed_variation=0),
-    Emitter(0.5, thrust=0.006, angle=90+uniform(-10,10), px=0.40, py=0,
-            par_angle_offset=90+uniform(-10,10), speed=0, speed_variation=0),
+    Emitter(18, thrust=0, angle=90, px=0.5, py=0.10, speed=8, speed_variation=2),
+    Emitter(3, thrust=0, angle=90, px=0.5, py=0.12, color_scale='reds',
+            angle_variation=20.0, speed=9, speed_variation=3),
+    Emitter(2, thrust=0, angle=90, px=0.5, py=0.17,
+            angle_variation=5.0, speed=4, speed_variation=1),
 ]
 
 for n in range(1, 300):
@@ -46,12 +34,12 @@ for n in range(1, 300):
             marker=go.scatter.Marker(
                 size=emitter.collector.sz * FACTOR,
                 color=emitter.collector.cl,
-                symbol='star-diamond',
-                opacity=0.6,
+                symbol='circle',
+                opacity=0.3,
                 line=dict(
                     width=0
                 ),
-                colorscale="greens"
+                colorscale=emitter.color_scale
             )
         ))
 
