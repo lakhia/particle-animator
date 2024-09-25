@@ -1,19 +1,27 @@
 import plotly.graph_objects as go
 import numpy as np
-from random import uniform
 from Emitter import Emitter
 
 np.random.seed(1)
 FACTOR = 4
 emitters = [
-    Emitter(18, thrust=0, angle=90, px=0.5, py=0.10, speed=8, speed_variation=2),
-    Emitter(3, thrust=0, angle=90, px=0.5, py=0.12, color_scale='reds',
-            angle_variation=20.0, speed=9, speed_variation=3),
-    Emitter(2, thrust=0, angle=90, px=0.5, py=0.17,
-            angle_variation=5.0, speed=4, speed_variation=1),
+    Emitter(1, thrust=0.0033, angle=90, px=(0.1 + x / 100), py=-0.01, speed=0, speed_variation=0)
+    for x in range(1, 10)
 ]
+emitters.extend([
+    Emitter(1, thrust=0.0033, angle=180, py=(0.1 + 1.7 * x / 100), px=1.01, speed=0, speed_variation=0)
+    for x in range(1, 10)]
+)
+emitters.extend([
+    Emitter(1, thrust=0.0033, angle=-90, px=(0.8 + x / 100), py=1.01, speed=0, speed_variation=0)
+    for x in range(1, 10)]
+)
+emitters.extend([
+    Emitter(1, thrust=0.0033, angle=0, py=(0.72 + 1.7 * x / 100), px=-0.01, speed=0, speed_variation=0)
+    for x in range(1, 10)]
+)
 
-for n in range(1, 300):
+for n in range(1, 360):
     fig = go.Figure(
         layout=dict(showlegend=False,
                     plot_bgcolor='#000',
@@ -28,9 +36,14 @@ for n in range(1, 300):
     for emitter in emitters:
         emitter.run(n)
         fig.add_trace(go.Scatter(
+            line_shape='linear',
             x=emitter.collector.px,
             y=emitter.collector.py,
-            mode="markers",
+            mode="lines",
+            line=dict(
+                color="rgba(255,0,0,0.75)",
+                width=4*FACTOR
+            ),
             marker=go.scatter.Marker(
                 size=emitter.collector.sz * FACTOR,
                 color=emitter.collector.cl,
