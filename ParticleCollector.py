@@ -78,6 +78,8 @@ class ParticleCollector:
         self.life += 1
         self.sz = 200 * (3 + 12 * np.abs(np.cos(0.15 * self.life))) / (200 + self.life)
         move_node_particles(self)
+        self.vx /= 1.2
+        self.vy /= 1.2
 
     def reflect(self):
         s = np.where(self.px > 1, -1, 1)

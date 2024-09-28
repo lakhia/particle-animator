@@ -1,62 +1,30 @@
-import plotly.graph_objects as go
-import numpy as np
-from Emitter import Emitter
+import argparse
 
-np.random.seed(1)
-FACTOR = 4
-emitters = [
-    Emitter(1, thrust=0.0033, angle=90, px=(0.1 + x / 100), py=-0.01, speed=0, speed_variation=0)
-    for x in range(1, 10)
-]
-emitters.extend([
-    Emitter(1, thrust=0.0033, angle=180, py=(0.1 + 1.7 * x / 100), px=1.01, speed=0, speed_variation=0)
-    for x in range(1, 10)]
-)
-emitters.extend([
-    Emitter(1, thrust=0.0033, angle=-90, px=(0.8 + x / 100), py=1.01, speed=0, speed_variation=0)
-    for x in range(1, 10)]
-)
-emitters.extend([
-    Emitter(1, thrust=0.0033, angle=0, py=(0.72 + 1.7 * x / 100), px=-0.01, speed=0, speed_variation=0)
-    for x in range(1, 10)]
-)
+from EmitterCollector import create_emitter_star, EmitterCollector
 
-for n in range(1, 360):
-    fig = go.Figure(
-        layout=dict(showlegend=False,
-                    plot_bgcolor='#000',
-                    width=960 * FACTOR,
-                    height=540 * FACTOR,
-                    margin=dict(l=0, r=0, t=0, b=0)
-                    )
-    )
-    fig.update_xaxes(visible=False, zeroline=False, showgrid=False, range=[0, 1])
-    fig.update_yaxes(visible=False, zeroline=False, showgrid=False, range=[0, 1])
+create_emitter_star(8, px=0.50, py=0.50, speed=0, speed_variation=0)
+create_emitter_star(8, px=0.25, py=0.75, speed=0, speed_variation=0)
+create_emitter_star(8, px=0.75, py=0.75, speed=0, speed_variation=0)
+create_emitter_star(8, px=0.25, py=0.25, speed=0, speed_variation=0)
+create_emitter_star(8, px=0.75, py=0.25, speed=0, speed_variation=0)
+factor = 4
 
-    for emitter in emitters:
-        emitter.run(n)
-        fig.add_trace(go.Scatter(
-            line_shape='linear',
-            x=emitter.collector.px,
-            y=emitter.collector.py,
-            mode="lines",
-            line=dict(
-                color="rgba(255,0,0,0.75)",
-                width=4*FACTOR
-            ),
-            marker=go.scatter.Marker(
-                size=emitter.collector.sz * FACTOR,
-                color=emitter.collector.cl,
-                symbol='circle',
-                opacity=0.3,
-                line=dict(
-                    width=0
-                ),
-                colorscale=emitter.color_scale
-            )
-        ))
+parser = argparse.ArgumentParser(prog='emitter',
+                                 description='Outputs images')
+parser.add_argument('-d', '--debug', action='store_true')
+parser.add_argument('-c', '--count', default=-1)
+args = parser.parse_args()
 
-    if n % 10 == 0:
-        print("Wrote %d frame" % n)
+if args.count == -1:
+    if args.debug:
+        args.count = 30
+        factor = 1
+    else:
+        args.count = 300
 
-    fig.write_image('images/fig_%03d.png' % n)
+for frame in range(1, args.count):
+    EmitterCollector.run(frame)
+    fig = EmitterCollector.draw(frame, factor)
+    fig.write_image('images/fig_%03d.png' % frame)
+    if frame % 10 == 0:
+        print("Wrote %d frame" % frame)
