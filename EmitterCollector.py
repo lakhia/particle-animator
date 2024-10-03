@@ -29,8 +29,8 @@ class EmitterCollector:
         fig = go.Figure(
             layout=dict(showlegend=False,
                         plot_bgcolor='#000',
-                        width=960 * factor,
-                        height=540 * factor,
+                        width=480 * factor,
+                        height=270 * factor,
                         margin=dict(l=0, r=0, t=0, b=0)
                         )
         )
@@ -38,10 +38,9 @@ class EmitterCollector:
         fig.update_yaxes(visible=False, zeroline=False, showgrid=False, range=[0, 1])
         for emitter in EmitterCollector.collector:
             fig.add_trace(go.Scatter(
-                line_shape='linear',
                 x=emitter.collector.px,
                 y=emitter.collector.py,
-                mode="lines",
+                mode="markers",
                 line=dict(
                     color="rgba(255,0,0,0.75)",
                     width=4 * factor
@@ -60,8 +59,8 @@ class EmitterCollector:
         return fig
 
 
-def create_emitter_star(num=10, thrust=0.0006, px=0.0, py=0.0, **kwargs):
+def create_emitter_star(num=10, thrust=0.002, px=0.0, py=0.0, **kwargs):
     for x in range(0, num):
         angle = 360 * x / num + random.normalvariate(0, 7)
-        EmitterCollector.add_emitter(Emitter(3, thrust=thrust + random.normalvariate(0, 0.0002),
+        EmitterCollector.add_emitter(Emitter(1, thrust=thrust + random.normalvariate(0, 0.0002),
                                              angle=angle, px=px, py=py, **kwargs))

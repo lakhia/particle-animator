@@ -15,7 +15,7 @@ class Emitter(Node):
         self.speed_max = speed + speed_variation
         self.color_scale = color_scale
         self.collector = ParticleCollector()
-        self.angle_diff = 0.3
+        self.angle_diff = 0.4
 
     def add_particle(self):
         hypo = random.uniform(self.speed_min, self.speed_max) / 1000
@@ -31,8 +31,6 @@ class Emitter(Node):
 
     def run(self, frame: int):
         self.angle += self.angle_diff
-        self.speed_min += self.angle_diff/20
-        self.speed_max += self.angle_diff/6
 
         super().run(frame)
         if self.rate >= 1:
