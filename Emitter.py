@@ -5,7 +5,7 @@ from ParticleCollector import ParticleCollector, Node
 
 class Emitter(Node):
     def __init__(self, rate, angle_variation=1.0, par_angle_offset=0.0,
-                 speed=65.0, speed_variation=35.0, color_scale='inferno',
+                 speed=65.0, speed_variation=35.0, color_scale='reds',
                  **kwargs):
         super().__init__(**kwargs)
         self.rate = rate
@@ -18,7 +18,7 @@ class Emitter(Node):
         self.angle_diff = 0.4
 
     def add_particle(self):
-        hypo = random.uniform(self.speed_min, self.speed_max) / 1000
+        hypo = random.uniform(self.speed_min, self.speed_max) / 10
         angle_dev = self.par_angle_offset + random.normalvariate(0, self.angle_variation)
         angle = math.radians(self.angle + angle_dev)
         vx = math.cos(angle) * hypo
@@ -30,8 +30,6 @@ class Emitter(Node):
                                     size=sz, color=random.normalvariate(0, 0.03))
 
     def run(self, frame: int):
-        self.angle += self.angle_diff
-
         super().run(frame)
         if self.rate >= 1:
             for _ in range(int(self.rate)):

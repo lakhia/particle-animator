@@ -64,3 +64,14 @@ def create_emitter_star(num=10, thrust=0.002, px=0.0, py=0.0, **kwargs):
         angle = 360 * x / num + random.normalvariate(0, 7)
         EmitterCollector.add_emitter(Emitter(1, thrust=thrust + random.normalvariate(0, 0.0002),
                                              angle=angle, px=px, py=py, **kwargs))
+
+
+def create_edges(num_x=10, num_y=10, **kwargs):
+    for x in range(0, num_x + 1):
+        for y in range(0, num_y + 1):
+            if x < 1:
+                EmitterCollector.add_emitter(Emitter(1, angle=0, px=x / num_x, py=y / num_y,
+                                                     **kwargs))
+            elif x >= num_x:
+                EmitterCollector.add_emitter(Emitter(1, angle=180, px=x / num_x, py=y / num_y,
+                                                     **kwargs))
