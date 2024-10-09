@@ -2,7 +2,7 @@ import argparse
 
 from EmitterCollector import create_edges, EmitterCollector
 
-create_edges(8, 8, thrust=0.002, angle_variation=360, speed=0.1, speed_variation=0.01)
+create_edges(8, 8, thrust=0.003, angle_variation=360, speed=0, speed_variation=0)
 factor = 8
 
 parser = argparse.ArgumentParser(prog='emitter',

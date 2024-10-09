@@ -65,7 +65,7 @@ class ParticleCollector:
         self.life = np.append(self.life, 1)
 
     def run(self, frame: int):
-        ln_diff = len(self.px) - 600
+        ln_diff = len(self.px) - 310
         if ln_diff > 0:
             self.px = self.px[ln_diff:]
             self.py = self.py[ln_diff:]
@@ -76,10 +76,9 @@ class ParticleCollector:
             self.life = self.life[ln_diff:]
 
         self.life += 1
-        self.sz = 200 * (3 + 12 * np.abs(np.cos(0.15 * self.life))) / (200 + self.life)
         move_node_particles(self)
-        self.vx /= 1.2
-        self.vy /= 1.2
+        self.vx /= 1.02
+        self.vy /= 1.02
 
     def reflect(self):
         s = np.where(self.px > 1, -1, 1)

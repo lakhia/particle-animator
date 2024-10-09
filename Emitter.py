@@ -5,8 +5,8 @@ from ParticleCollector import ParticleCollector, Node
 
 class Emitter(Node):
     def __init__(self, rate, angle_variation=1.0, par_angle_offset=0.0,
-                 speed=65.0, speed_variation=35.0, color_scale='reds',
-                 **kwargs):
+                 speed=65.0, speed_variation=35.0, symbol='diamond-tall',
+                 color_scale='greens', **kwargs):
         super().__init__(**kwargs)
         self.rate = rate
         self.angle_variation = angle_variation
@@ -14,20 +14,27 @@ class Emitter(Node):
         self.speed_min = speed - speed_variation
         self.speed_max = speed + speed_variation
         self.color_scale = color_scale
+        self.symbol = symbol
         self.collector = ParticleCollector()
         self.angle_diff = 0.4
+        self.dx = 0
+        self.dy = 0
 
     def add_particle(self):
-        hypo = random.uniform(self.speed_min, self.speed_max) / 10
-        angle_dev = self.par_angle_offset + random.normalvariate(0, self.angle_variation)
-        angle = math.radians(self.angle + angle_dev)
-        vx = math.cos(angle) * hypo
-        vy = math.sin(angle) * hypo
-        sz = random.uniform(3, 11)
-        self.collector.add_particle(px=self.px,
-                                    py=self.py,
-                                    vx=vx, vy=vy,
-                                    size=sz, color=random.normalvariate(0, 0.03))
+        #hypo = random.uniform(self.speed_min, self.speed_max) / 10
+        #angle_dev = self.par_angle_offset + random.normalvariate(0, self.angle_variation)
+        #angle = math.radians(self.angle + angle_dev)
+        #vx = math.cos(angle) * hypo
+        #vy = math.sin(angle) * hypo
+        # if self.angle == 0 or self.angle == 180:
+        #     self.dy = math.sin(self.life/20) / 130
+        # else:
+        #     self.dx = math.sin(self.life/20) / 130
+
+        self.collector.add_particle(px=self.px+self.dx,
+                                    py=self.py+self.dy,
+                                    vx=self.vx, vy=self.vy,
+                                    size=4, color=random.normalvariate(0, 0.5))
 
     def run(self, frame: int):
         super().run(frame)

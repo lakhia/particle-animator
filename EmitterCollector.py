@@ -48,7 +48,7 @@ class EmitterCollector:
                 marker=go.scatter.Marker(
                     size=emitter.collector.sz * factor,
                     color=emitter.collector.cl,
-                    symbol='circle',
+                    symbol=emitter.symbol,
                     opacity=0.3,
                     line=dict(
                         width=0
@@ -70,8 +70,14 @@ def create_edges(num_x=10, num_y=10, **kwargs):
     for x in range(0, num_x + 1):
         for y in range(0, num_y + 1):
             if x < 1:
-                EmitterCollector.add_emitter(Emitter(1, angle=0, px=x / num_x, py=y / num_y,
-                                                     **kwargs))
+                EmitterCollector.add_emitter(Emitter(1, angle=0, px=x / num_x, py=-0.05 + y / num_y,
+                                                     symbol='diamond-wide', **kwargs))
             elif x >= num_x:
-                EmitterCollector.add_emitter(Emitter(1, angle=180, px=x / num_x, py=y / num_y,
+                EmitterCollector.add_emitter(Emitter(1, angle=180, px=x / num_x, py=0.05 + y / num_y,
+                                                     symbol='diamond-wide', **kwargs))
+            elif y < 1:
+                EmitterCollector.add_emitter(Emitter(1, angle=90, px=-0.008 + x / num_x, py=y / num_y,
+                                                     **kwargs))
+            elif y >= num_y:
+                EmitterCollector.add_emitter(Emitter(1, angle=-90, px=0.008 + x / num_x, py=y / num_y,
                                                      **kwargs))
