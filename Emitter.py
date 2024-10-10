@@ -1,6 +1,7 @@
-import math
 import random
-from ParticleCollector import ParticleCollector, Node
+
+from Node import Node
+from ParticleCollector import ParticleCollector
 
 
 class Emitter(Node):

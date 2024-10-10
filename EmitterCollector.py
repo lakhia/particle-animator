@@ -3,6 +3,7 @@ import numpy as np
 import plotly.graph_objects as go
 
 from Emitter import Emitter
+from LineEmitter import LineEmitter
 
 np.random.seed(1)
 random.seed(1)
@@ -14,10 +15,6 @@ class EmitterCollector:
     @staticmethod
     def add_emitter(emitter):
         EmitterCollector.collector.append(emitter)
-
-    @staticmethod
-    def spawn(emitter, **kwargs):
-        EmitterCollector.add_emitter(Emitter(emitter.__dict__, **kwargs))
 
     @staticmethod
     def run(frame: int):
@@ -70,14 +67,14 @@ def create_edges(num_x=10, num_y=10, **kwargs):
     for x in range(0, num_x + 1):
         for y in range(0, num_y + 1):
             if x < 1:
-                EmitterCollector.add_emitter(Emitter(1, angle=0, px=x / num_x, py=-0.05 + y / num_y,
-                                                     symbol='diamond-wide', **kwargs))
+                EmitterCollector.add_emitter(LineEmitter(angle=0, px=x / num_x, py=-0.05 + y / num_y,
+                                                         **kwargs))
             elif x >= num_x:
-                EmitterCollector.add_emitter(Emitter(1, angle=180, px=x / num_x, py=0.05 + y / num_y,
-                                                     symbol='diamond-wide', **kwargs))
+                EmitterCollector.add_emitter(LineEmitter(angle=180, px=x / num_x, py=0.05 + y / num_y,
+                                                         **kwargs))
             elif y < 1:
-                EmitterCollector.add_emitter(Emitter(1, angle=90, px=-0.008 + x / num_x, py=y / num_y,
-                                                     **kwargs))
+                EmitterCollector.add_emitter(LineEmitter(angle=90, px=-0.008 + x / num_x, py=y / num_y,
+                                                         **kwargs))
             elif y >= num_y:
-                EmitterCollector.add_emitter(Emitter(1, angle=-90, px=0.008 + x / num_x, py=y / num_y,
-                                                     **kwargs))
+                EmitterCollector.add_emitter(LineEmitter(angle=-90, px=0.008 + x / num_x, py=y / num_y,
+                                                         **kwargs))
