@@ -1,3 +1,5 @@
+import random
+
 from Node import Node
 from ParticleCollector import ParticleCollector
 
@@ -18,9 +20,12 @@ class LineEmitter(Node):
         self.dy = 0
 
     def add_particle(self):
+        dx = random.uniform(-0.0006, 0.0006)
+        dy = random.uniform(-0.0006, 0.0006)
+        cl = random.normalvariate(0, 0.4)
         self.collector.add_particle(px=self.px, py=self.py,
-                                    vx=0, vy=0,
-                                    size=4, color=0.5)
+                                    vx=dx, vy=dy,
+                                    size=4, color=cl)
 
     def run(self, frame: int):
         super().run(frame)

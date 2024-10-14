@@ -1,12 +1,16 @@
+import cairo
 import random
+from matplotlib import cm, colors
 import numpy as np
-import plotly.graph_objects as go
 
 from Emitter import Emitter
 from LineEmitter import LineEmitter
 
 np.random.seed(1)
 random.seed(1)
+WIDTH = 480
+HEIGHT = 270
+ASPECT_RATIO = WIDTH / HEIGHT
 
 
 class EmitterCollector:
@@ -23,37 +27,30 @@ class EmitterCollector:
 
     @staticmethod
     def draw(frame: int, factor: int):
-        fig = go.Figure(
-            layout=dict(showlegend=False,
-                        plot_bgcolor='#000',
-                        width=480 * factor,
-                        height=270 * factor,
-                        margin=dict(l=0, r=0, t=0, b=0)
-                        )
-        )
-        fig.update_xaxes(visible=False, zeroline=False, showgrid=False, range=[0, 1])
-        fig.update_yaxes(visible=False, zeroline=False, showgrid=False, range=[0, 1])
+        s = cairo.ImageSurface(cairo.FORMAT_ARGB32, WIDTH * factor, HEIGHT * factor)
+        ctx = cairo.Context(s)
+
+        ctx.scale(270 * factor, 270 * factor)
+        # m = cairo.Matrix(yy=-1, y0=s.get_height())
+        # ctx.transform(m)
+
+        # background
+        ctx.set_source_rgb(0, 0, 0)
+        ctx.paint()
+
+        ctx.set_line_width(1 / 70)
+        norm = colors.Normalize(vmin=0, vmax=1, clip=True)
+        mapper = cm.ScalarMappable(norm=norm, cmap="hot")
         for emitter in EmitterCollector.collector:
-            fig.add_trace(go.Scatter(
-                x=emitter.collector.px,
-                y=emitter.collector.py,
-                mode="markers",
-                line=dict(
-                    color="rgba(255,0,0,0.75)",
-                    width=4 * factor
-                ),
-                marker=go.scatter.Marker(
-                    size=emitter.collector.sz * factor,
-                    color=emitter.collector.cl,
-                    symbol=emitter.symbol,
-                    opacity=0.3,
-                    line=dict(
-                        width=0
-                    ),
-                    colorscale=emitter.color_scale
-                )
-            ))
-        return fig
+            ln = len(emitter.collector.px)
+            for i, (x, y, cl) in enumerate(zip(emitter.collector.px, emitter.collector.py, emitter.collector.cl)):
+                ctx.line_to(x, y)
+                cl = mapper.to_rgba(cl, alpha=0.4)
+                ctx.set_source_rgba(cl[0], cl[1], cl[2], cl[3])
+                ctx.stroke()
+                if i != ln - 1:
+                    ctx.move_to(x, y)
+        return s
 
 
 def create_emitter_star(num=10, thrust=0.002, px=0.0, py=0.0, **kwargs):
@@ -63,18 +60,19 @@ def create_emitter_star(num=10, thrust=0.002, px=0.0, py=0.0, **kwargs):
                                              angle=angle, px=px, py=py, **kwargs))
 
 
-def create_edges(num_x=10, num_y=10, **kwargs):
-    for x in range(0, num_x + 1):
-        for y in range(0, num_y + 1):
-            if x < 1:
-                EmitterCollector.add_emitter(LineEmitter(angle=0, px=x / num_x, py=-0.05 + y / num_y,
-                                                         **kwargs))
-            elif x >= num_x:
-                EmitterCollector.add_emitter(LineEmitter(angle=180, px=x / num_x, py=0.05 + y / num_y,
-                                                         **kwargs))
-            elif y < 1:
-                EmitterCollector.add_emitter(LineEmitter(angle=90, px=-0.008 + x / num_x, py=y / num_y,
-                                                         **kwargs))
-            elif y >= num_y:
-                EmitterCollector.add_emitter(LineEmitter(angle=-90, px=0.008 + x / num_x, py=y / num_y,
-                                                         **kwargs))
+def create_edges(num_x=6, num_y=3, **kwargs):
+    diff_x = ASPECT_RATIO / num_x
+    diff_y = 1 / num_y
+    for _ in range(0, num_y + 1):
+        # Left & Right edge
+        EmitterCollector.add_emitter(LineEmitter(angle=0, px=0, py=diff_y * _,
+                                                 **kwargs))
+        EmitterCollector.add_emitter(LineEmitter(angle=180, px=ASPECT_RATIO, py=diff_y * _,
+                                                 **kwargs))
+    for _ in range(0, num_x + 1):
+        # Top & bottom edge
+        EmitterCollector.add_emitter(LineEmitter(angle=90, px=diff_x * _, py=0,
+                                                 **kwargs))
+        EmitterCollector.add_emitter(LineEmitter(angle=-90, px=diff_x * _, py=1,
+                                                 **kwargs))
+

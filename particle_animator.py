@@ -2,7 +2,7 @@ import argparse
 
 from EmitterCollector import create_edges, EmitterCollector
 
-create_edges(8, 8, thrust=0.003, angle_variation=360, speed=0, speed_variation=0)
+create_edges(thrust=0.003, angle_variation=360, speed=0, speed_variation=0)
 factor = 8
 
 parser = argparse.ArgumentParser(prog='emitter',
@@ -26,6 +26,6 @@ for frame in range(1, args.end):
     EmitterCollector.run(frame)
     if frame >= args.start and frame % args.skip == 0:
         fig = EmitterCollector.draw(frame, factor)
-        fig.write_image('images/fig_%03d.png' % frame)
+        fig.write_to_png('images/fig_%03d.png' % frame)
         if frame % 10 == 0:
             print("Wrote %d frame" % frame)
