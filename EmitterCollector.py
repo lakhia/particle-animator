@@ -1,9 +1,9 @@
 import cairo
 import random
-from matplotlib import cm, colors
 import numpy as np
 
 from Emitter import Emitter
+from LetterEmitter import LetterEmitter
 from LineEmitter import LineEmitter
 
 np.random.seed(1)
@@ -14,15 +14,15 @@ ASPECT_RATIO = WIDTH / HEIGHT
 
 
 class EmitterCollector:
-    collector = []
+    emitters = []
 
     @staticmethod
     def add_emitter(emitter):
-        EmitterCollector.collector.append(emitter)
+        EmitterCollector.emitters.append(emitter)
 
     @staticmethod
     def run(frame: int):
-        for emitter in EmitterCollector.collector:
+        for emitter in EmitterCollector.emitters:
             emitter.run(frame)
 
     @staticmethod
@@ -38,18 +38,8 @@ class EmitterCollector:
         ctx.set_source_rgb(0, 0, 0)
         ctx.paint()
 
-        ctx.set_line_width(1 / 70)
-        norm = colors.Normalize(vmin=0, vmax=1, clip=True)
-        mapper = cm.ScalarMappable(norm=norm, cmap="hot")
-        for emitter in EmitterCollector.collector:
-            ln = len(emitter.collector.px)
-            for i, (x, y, cl) in enumerate(zip(emitter.collector.px, emitter.collector.py, emitter.collector.cl)):
-                ctx.line_to(x, y)
-                cl = mapper.to_rgba(cl, alpha=0.4)
-                ctx.set_source_rgba(cl[0], cl[1], cl[2], cl[3])
-                ctx.stroke()
-                if i != ln - 1:
-                    ctx.move_to(x, y)
+        for emitter in EmitterCollector.emitters:
+            emitter.draw(ctx, frame, factor)
         return s
 
 
@@ -76,3 +66,11 @@ def create_edges(num_x=6, num_y=3, **kwargs):
         EmitterCollector.add_emitter(LineEmitter(angle=-90, px=diff_x * _, py=1,
                                                  **kwargs))
 
+
+def create_grid(num_x=33, num_y=13, **kwargs):
+    diff_x = ASPECT_RATIO / num_x
+    diff_y = 1 / num_y
+    for x in range(0, num_x + 1):
+        for y in range(0, num_y + 1):
+            EmitterCollector.add_emitter(LetterEmitter(px=diff_x * x, py=diff_y * y,
+                                                       **kwargs))

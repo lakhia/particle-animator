@@ -1,4 +1,5 @@
 import random
+import matplotlib.pyplot as plt
 
 from Node import Node
 from ParticleCollector import ParticleCollector
@@ -7,14 +8,15 @@ from ParticleCollector import ParticleCollector
 class Emitter(Node):
     def __init__(self, rate, angle_variation=1.0, par_angle_offset=0.0,
                  speed=65.0, speed_variation=35.0, symbol='diamond-tall',
-                 color_scale='greens', **kwargs):
+                 color_scale='BrBG', **kwargs):
         super().__init__(**kwargs)
-        self.rate = rate
-        self.angle_variation = angle_variation
+        self.rate = random.gauss(rate, rate*2)
+        self.angle = random.uniform(0, angle_variation)
         self.par_angle_offset = par_angle_offset
         self.speed_min = speed - speed_variation
         self.speed_max = speed + speed_variation
         self.color_scale = color_scale
+        self.color_map = plt.get_cmap(color_scale)
         self.symbol = symbol
         self.collector = ParticleCollector()
         self.angle_diff = 0.4
@@ -45,5 +47,3 @@ class Emitter(Node):
         else:
             if random.uniform(0, 1) < self.rate:
                 self.add_particle()
-
-        self.collector.run(frame)

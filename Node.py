@@ -29,12 +29,14 @@ class Node:
             self.py += math.sin(angle) * self.thrust
         self.life += 1
         move_node_particles(self)
+        self.reflect()
 
     def reflect(self):
+        from EmitterCollector import ASPECT_RATIO
         # TODO: reflection in thrust mode is hacky
-        if self.px > 1 or self.px < 0:
+        if self.px > ASPECT_RATIO or self.px < 0:
             if self.thrust:
-                self.px = 1 - math.fabs(self.px)
+                self.px = ASPECT_RATIO - math.fabs(self.px)
             else:
                 self.vx = self.vx * -1
         if self.py > 1 or self.py < 0:
@@ -42,4 +44,3 @@ class Node:
                 self.py = 1 - math.fabs(self.py)
             else:
                 self.vy = self.vy * -1
-

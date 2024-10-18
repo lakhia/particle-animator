@@ -1,4 +1,5 @@
 import numpy as np
+from matplotlib import cm, colors
 
 from Node import move_node_particles
 
@@ -46,3 +47,15 @@ class ParticleCollector:
         s = np.where(self.py > 1, -1, 1)
         s = s * np.where(self.py < 0, -1, 1)
         self.vy = self.vy * s
+
+    def draw(self, ctx, frame, factor):
+        ln = len(self.px)
+        norm = colors.Normalize(vmin=0, vmax=1, clip=True)
+        mapper = cm.ScalarMappable(norm=norm, cmap="hot")
+        for i, (x, y, cl) in enumerate(zip(self.px, self.py, self.cl)):
+            ctx.line_to(x, y)
+            cl = mapper.to_rgba(cl, alpha=0.4)
+            ctx.set_source_rgba(cl[0], cl[1], cl[2], cl[3])
+            ctx.stroke()
+            if i != ln - 1:
+                ctx.move_to(x, y)

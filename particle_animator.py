@@ -1,15 +1,15 @@
 import argparse
 
-from EmitterCollector import create_edges, EmitterCollector
+from EmitterCollector import create_grid, EmitterCollector
 
-create_edges(thrust=0.003, angle_variation=360, speed=0, speed_variation=0)
+create_grid(num_x=8, num_y=3, rate=0.08, thrust=0.02, angle_variation=360, speed=0, speed_variation=0.015)
 factor = 8
 
 parser = argparse.ArgumentParser(prog='emitter',
                                  description='Outputs images')
 parser.add_argument('-d', '--debug', action='store_true')
-parser.add_argument('-st', '--start', type=int, default=0)
-parser.add_argument('-e', '--end', type=int, default=-1)
+parser.add_argument('-st', '--start', type=int, default=1)
+parser.add_argument('-e', '--end', type=int, default=240)
 parser.add_argument('-s', '--skip', type=int, default=1)
 args = parser.parse_args()
 

@@ -32,3 +32,7 @@ class LineEmitter(Node):
         self.add_particle()
         self.collector.run(frame)
         self.collector.sz = 150 / (50 + self.collector.life)
+
+    def draw(self, ctx, frame, factor):
+        ctx.set_line_width(1 / 70)
+        self.collector.draw(ctx, frame, factor)
