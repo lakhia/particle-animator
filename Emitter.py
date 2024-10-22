@@ -2,15 +2,14 @@ import random
 import matplotlib.pyplot as plt
 
 from Node import Node
-from ParticleCollector import ParticleCollector
 
 
 class Emitter(Node):
     def __init__(self, rate, angle_variation=1.0, par_angle_offset=0.0,
                  speed=65.0, speed_variation=35.0, symbol='diamond-tall',
-                 color_scale='BrBG', **kwargs):
+                 color_scale='BrBG', collector=None, **kwargs):
         super().__init__(**kwargs)
-        self.rate = random.gauss(rate, rate*2)
+        self.rate = random.gauss(rate, rate * 2)
         self.angle = random.uniform(0, angle_variation)
         self.par_angle_offset = par_angle_offset
         self.speed_min = speed - speed_variation
@@ -18,7 +17,7 @@ class Emitter(Node):
         self.color_scale = color_scale
         self.color_map = plt.get_cmap(color_scale)
         self.symbol = symbol
-        self.collector = ParticleCollector()
+        self.collector = collector
         self.angle_diff = 0.4
         self.dx = 0
         self.dy = 0
@@ -34,8 +33,8 @@ class Emitter(Node):
         # else:
         #     self.dx = math.sin(self.life/20) / 130
 
-        self.collector.add_particle(px=self.px+self.dx,
-                                    py=self.py+self.dy,
+        self.collector.add_particle(px=self.px + self.dx,
+                                    py=self.py + self.dy,
                                     vx=self.vx, vy=self.vy,
                                     size=4, color=random.normalvariate(0, 0.5))
 
@@ -47,3 +46,10 @@ class Emitter(Node):
         else:
             if random.uniform(0, 1) < self.rate:
                 self.add_particle()
+        if self.collector:
+            self.collector.run(frame)
+
+    def draw(self, ctx, frame, factor):
+        ctx.set_line_width(1 / 70)
+        if self.collector:
+            self.collector.draw(ctx, frame, factor)

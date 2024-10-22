@@ -5,6 +5,7 @@ import numpy as np
 from Emitter import Emitter
 from LetterEmitter import LetterEmitter
 from LineEmitter import LineEmitter
+from ParticleCollector import ParticleCollector
 
 np.random.seed(1)
 random.seed(1)
@@ -72,5 +73,5 @@ def create_grid(num_x=33, num_y=13, **kwargs):
     diff_y = 1 / num_y
     for x in range(0, num_x + 1):
         for y in range(0, num_y + 1):
-            EmitterCollector.add_emitter(LetterEmitter(px=diff_x * x, py=diff_y * y,
+            EmitterCollector.add_emitter(Emitter(px=diff_x * x, py=diff_y * y, collector=ParticleCollector(),
                                                        **kwargs))
