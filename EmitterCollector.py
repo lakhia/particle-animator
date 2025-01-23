@@ -3,7 +3,6 @@ import random
 import numpy as np
 
 from Emitter import Emitter
-from LetterEmitter import LetterEmitter
 from LineEmitter import LineEmitter
 from ParticleCollector import ParticleCollector
 
