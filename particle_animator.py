@@ -5,12 +5,12 @@ from EmitterCollector import create_grid, EmitterCollector
 create_grid(num_x=8, num_y=3, rate=0.08, thrust=0.02, angle_variation=360, speed=0, speed_variation=0.015)
 factor = 8
 
-parser = argparse.ArgumentParser(prog='emitter',
-                                 description='Outputs images')
-parser.add_argument('-d', '--debug', action='store_true')
-parser.add_argument('-st', '--start', type=int, default=1)
-parser.add_argument('-e', '--end', type=int, default=240)
-parser.add_argument('-s', '--skip', type=int, default=1)
+parser = argparse.ArgumentParser(prog='particle_animator.py', description='Outputs images')
+parser.add_argument('-d', '--debug', action='store_true',
+                    help='Debug mode: creates smaller images for faster feedback')
+parser.add_argument('-st', '--start', type=int, default=1, help='Start frame, defaults to 1')
+parser.add_argument('-e', '--end', type=int, default=240, help='End frame, defaults to 240')
+parser.add_argument('-s', '--skip', type=int, default=1, help='Skip frames, defaults to 1')
 args = parser.parse_args()
 
 if args.end == -1:
