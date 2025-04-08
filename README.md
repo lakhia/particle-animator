@@ -1,4 +1,4 @@
-# Particle Animation Maker
+# Particle Animator
 
 ## Introduction
 This Python app uses Emitters to generate particles. The emitters and particles are animated via various physical forces such as acceleration, angular velocity, etc. This can be used to generate various animations.
@@ -32,6 +32,7 @@ There is currently no configuration file or input file. Therefore, the emitters,
 
 ![Star Swirling](docs/stars_swirling_orange.gif)
 ![Letters Randomly Moving](docs/letters_emitting.gif)
+![Scribbling Red Lines](docs/scribbling_red_lines.gif)
 ![Confetti](docs/confetti.gif)
 
 PS: If you are curious, these demos were generated using [gifski](https://gif.ski/):
