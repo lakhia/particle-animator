@@ -1,0 +1,11 @@
+.DS_Store
+.idea
+__pycache__
+images/
+movies/
+lib/
+include/
+bin/
+share/
+video_test/
+

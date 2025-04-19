@@ -40,3 +40,8 @@ PS: If you are curious, these demos were generated using [gifski](https://gif.sk
 ```shell
 gifski --fast-forward 3 --fps 6 --width 320 -o docs/stars_swirling_orange.gif movies/stars_swirling_orange.mp4
 ```
+
+# License
+
+This code is provided under the "Creative Commons NonCommercial NoDerivatives" license. AKA [CC BY-NC-ND](https://github.com/Gibberlings3/GitHub-Templates/blob/master/License-Templates/CC-BY-NC-ND-4.0/LICENSE-CC-BY-NC-ND-4.0.md). 
+
